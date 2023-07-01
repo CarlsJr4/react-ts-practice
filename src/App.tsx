@@ -1,11 +1,11 @@
 import React from 'react';
 import './App.css';
-import ExpandableText from './ExpandableText';
+import Form from './Form';
 
 function App() {
   return (
     <div>
-      <ExpandableText>Hello World </ExpandableText>
+      <Form></Form>
     </div>
   );
 }
