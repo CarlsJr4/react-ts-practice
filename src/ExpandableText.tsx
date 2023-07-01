@@ -1,45 +1,34 @@
-import React, { ReactNode, useState } from 'react';
-import ExpandButton from './ExpandButton';
+import React, { useState } from 'react';
 
-// Goal: pass a prop which limits the amount of characters that can be shown on the screen
-// Create a show more/show less button that expands/collapses the text
-
-// Take text string
-// Substring
-// Keep track of original string in state
-// Keep track of modified string in state
-// Update as necessary
-
-// Good practice: define the props interface before passing the props down from parent for intellisense
-
+// Study Mosh's solution, it is much shorter than yours
 interface Props {
   children: string;
   maxChars?: number;
 }
 
 export default function ExpandableText({ children, maxChars = 100 }: Props) {
-  const [originalText, _] = useState(children);
-  const [displayedText, updateDisplayedText] = useState(
-    originalText.substring(0, maxChars) + '...'
-  );
-  const [expanded, setExpanded] = useState(false);
-  const [buttonText, setButtonText] = useState('Show more');
+  const [isExpanded, setExpanded] = useState(false);
 
-  const handleClick = () => {
-    if (!expanded) {
-      updateDisplayedText(originalText);
-      setButtonText('Show less');
-    } else {
-      updateDisplayedText(originalText.substring(0, maxChars) + '...');
-      setButtonText('Show more');
-    }
-    setExpanded(!expanded);
-  };
+  // If the user sets max chars to longer than the size of the children, return the children unmodified, and with no extra button
+  if (children.length <= maxChars) return <p>{children}</p>;
 
+  // Else, use logic to display the text
+  const text = isExpanded ? children : children.substring(0, maxChars);
+
+  // Conditionally render button text based on parent state. No need for an extra component.
   return (
-    <div>
-      {displayedText}
-      <ExpandButton handleClick={handleClick} buttonText={buttonText} />
-    </div>
+    <p>
+      {text}...
+      <button onClick={() => setExpanded(!isExpanded)}>
+        {isExpanded ? 'See more' : 'See less'}
+      </button>
+    </p>
   );
+
+  // Key takeaways from Mosh's solution
+  // You don't need state for every variable
+  // Take advantage of conditional rendering
+  // Take advantage of short circuit returns
+  // You can perform logic with your props
+  // You don't need to conditionally render extra components, you can just use JSX if its simple enough
 }
