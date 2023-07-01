@@ -2,23 +2,20 @@ import React, { useState } from 'react';
 import './App.css';
 
 function App() {
-  // Task: Click the button to update the name
-
-  const [game, setGame] = useState({
-    id: 1,
-    player: {
-      name: 'John',
-    },
+  const [pizza, setPizza] = useState({
+    name: 'Spicy Pepperoni',
+    toppings: ['Mushroom'],
   });
 
   const handleClick = () => {
-    setGame({ ...game, player: { ...game.player, name: 'Carl' } });
+    setPizza({ ...pizza, toppings: [...pizza.toppings, 'Cheese'] });
   };
 
   return (
     <div className="App">
-      <p>{game.player.name}</p>
-      <button onClick={handleClick}>Change game</button>
+      <p>{pizza.name}</p>
+      <p>{pizza.toppings}</p>
+      <button onClick={handleClick}>Add a pizza topping</button>
     </div>
   );
 }
