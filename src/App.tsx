@@ -10,7 +10,7 @@ function App() {
 
   useEffect(() => {
     setLoading(true);
-    const { request, cancel } = userService.getAllUsers();
+    const { request, cancel } = userService.getAll<User>();
     request
       .then(res => {
         setUsers(res.data);
@@ -29,7 +29,7 @@ function App() {
   const deleteUser = (user: User) => {
     const originalUsers = [...users];
     setUsers(users.filter(u => u.id !== user.id));
-    userService.deleteUser(user.id).catch(err => {
+    userService.delete(user.id).catch(err => {
       setError(err.message);
       setUsers(originalUsers); // Undoes operation if delete request fails
     });
@@ -40,7 +40,7 @@ function App() {
     const originalUsers = [...users];
     setUsers([newUser, ...users]); // Optimistic UI update before state is populated with server response
     userService
-      .createUser(newUser)
+      .create(newUser)
       .then(({ data: savedUser }) => setUsers([savedUser, ...users]))
       .catch(err => {
         setError(err.message);
@@ -52,7 +52,7 @@ function App() {
     const updatedUser = { ...user, name: user.name + '!' };
     const originalUsers = [...users];
     setUsers(users.map(u => (u.id === user.id ? updatedUser : u))); // Optimistic UI update
-    userService.updateUser(user).catch(err => {
+    userService.update(user).catch(err => {
       setError(err.message);
       setUsers(originalUsers);
     });
